@@ -5,7 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 
-// --- CLASS VIU INTEGRATED ---
+// --- CLASS VIU ---
 class Viu {
     constructor() {
         this.inst = axios.create({
@@ -14,16 +14,14 @@ class Viu {
                 'accept-encoding': 'gzip',
                 'content-type': 'application/x-www-form-urlencoded',
                 'platform': 'android',
-                'user-agent': 'okhttp/4.12.0' // Penting agar tidak diblokir
+                'user-agent': 'okhttp/4.12.0'
             }
         });
         this.token = null;
     }
     
     getToken = async function () {
-        // Jika token sudah ada, return saja (caching sederhana)
         if (this.token) return this.token;
-
         try {
             const { data } = await this.inst.post('/auth/token', {
                 countryCode: 'ID',
@@ -43,13 +41,12 @@ class Viu {
                 deviceModel: 'V2242A',
                 flavour: 'all'
             });
-            
             this.token = data.token;
             this.inst.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
             return data.token;
         } catch (error) {
-            console.error("Gagal Get Token:", error.message);
-            throw new Error('Auth Failed');
+            console.error("Token Error:", error.message);
+            throw error;
         }
     }
     
@@ -86,7 +83,6 @@ class Viu {
         } else {
             episodes = [data.data.current_product];
         }
-        
         return { metadata: data.data, product_list: episodes };
     }
     
@@ -99,15 +95,14 @@ class Viu {
     }
 }
 
-// --- EXPRESS SERVER ---
+// --- SERVER SETUP ---
 const viu = new Viu();
-
 app.use(cors());
 app.use(express.json());
 
-// Root endpoint untuk cek server hidup atau mati
+// ROUTE CEK STATUS
 app.get('/api', (req, res) => {
-    res.json({ status: "Server SANN404 is Running", message: "Use /api/home to fetch data" });
+    res.json({ status: true, message: "SANN404 Backend Ready" });
 });
 
 app.get('/api/home', async (req, res) => {
@@ -115,16 +110,13 @@ app.get('/api/home', async (req, res) => {
         const data = await viu.home();
         res.json(data);
     } catch (e) {
-        console.error(e);
         res.status(500).json({ error: e.message });
     }
 });
 
 app.get('/api/search', async (req, res) => {
     try {
-        const { q } = req.query;
-        if(!q) return res.status(400).json({error: "Query required"});
-        const data = await viu.search(q);
+        const data = await viu.search(req.query.q);
         res.json(data);
     } catch (e) {
         res.status(500).json({ error: e.message });
@@ -133,8 +125,7 @@ app.get('/api/search', async (req, res) => {
 
 app.get('/api/detail', async (req, res) => {
     try {
-        const { id } = req.query;
-        const data = await viu.detail(id);
+        const data = await viu.detail(req.query.id);
         res.json(data);
     } catch (e) {
         res.status(500).json({ error: e.message });
@@ -143,8 +134,7 @@ app.get('/api/detail', async (req, res) => {
 
 app.get('/api/stream', async (req, res) => {
     try {
-        const { id } = req.query;
-        const data = await viu.stream(id);
+        const data = await viu.stream(req.query.id);
         res.json(data);
     } catch (e) {
         res.status(500).json({ error: e.message });
