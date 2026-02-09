@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SANN404 DRAMA</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">SANN404 <span class="highlight">DRAMA</span></div>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Cari Drakor...">
+            <button onclick="doSearch()"><i class="fas fa-search"></i></button>
+        </div>
+    </nav>
+
+    <div id="playerModal" class="player-modal">
+        <div class="player-container">
+            <div class="player-header">
+                <h3 id="playerTitle">Playing...</h3>
+                <button onclick="closePlayer()"><i class="fas fa-times"></i></button>
+            </div>
+            <video id="video" controls autoplay></video>
+            <div class="episode-list" id="playerEpisodes">
+                </div>
+        </div>
+    </div>
+
+    <main class="container">
+        
+        <div id="heroSection" class="hero hidden">
+            </div>
+
+        <div class="section-title">
+            <h2>Trending & Terbaru</h2>
+        </div>
+
+        <div id="contentGrid" class="grid-container">
+            <div class="loading">Memuat data SANN404...</div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Created with ❤️ by <strong>SANN404 FORUM</strong></p>
+        <p class="disclaimer">For Educational Purpose Only.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
