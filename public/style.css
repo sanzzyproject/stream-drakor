@@ -1,0 +1,111 @@
+:root {
+    --bg-color: #0a0a0a;
+    --card-bg: #161616;
+    --primary: #e50914; /* Netflix Red vibe */
+    --text: #ffffff;
+    --text-sec: #b3b3b3;
+    --glass: rgba(20, 20, 20, 0.85);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+
+body { background-color: var(--bg-color); color: var(--text); padding-top: 70px; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-color); }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+
+/* Navbar Floating Glass */
+.navbar {
+    position: fixed;
+    top: 0; left: 0; width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.logo { font-weight: 800; font-size: 1.2rem; letter-spacing: 1px; }
+.highlight { color: var(--primary); }
+
+.search-bar { display: flex; background: #333; border-radius: 20px; padding: 5px 15px; }
+.search-bar input { background: transparent; border: none; color: white; outline: none; width: 120px; }
+.search-bar button { background: transparent; border: none; color: #ccc; cursor: pointer; }
+
+/* Grid Layout */
+.container { padding: 20px; max-width: 1200px; margin: 0 auto; }
+.section-title h2 { margin-bottom: 15px; font-size: 1.2rem; border-left: 4px solid var(--primary); padding-left: 10px; }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+}
+
+/* Card Style */
+.card {
+    background: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s;
+    position: relative;
+}
+.card:hover { transform: scale(1.03); z-index: 2; }
+.card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; }
+.card-info { padding: 10px; }
+.card-title { font-size: 0.9rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-ep { font-size: 0.7rem; color: var(--text-sec); margin-top: 5px; }
+
+/* Player Modal */
+.player-modal {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.95);
+    z-index: 2000;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.player-modal.active { display: flex; }
+
+.player-container { width: 100%; max-width: 900px; padding: 10px; }
+.player-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
+.player-header button { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+
+video { width: 100%; max-height: 60vh; background: black; outline: none; }
+
+.episode-list {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+.ep-btn {
+    padding: 8px 15px;
+    background: #333;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    min-width: 60px;
+}
+.ep-btn:hover, .ep-btn.active { background: var(--primary); }
+
+/* Footer */
+footer { text-align: center; padding: 40px 20px; color: #666; font-size: 0.8rem; }
+
+/* Mobile Tweaks */
+@media (max-width: 600px) {
+    .grid-container { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .card-title { font-size: 0.75rem; }
+    .search-bar input { width: 80px; }
+}
